@@ -57,18 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sample images (Unsplash) — adjust or replace with local assets as needed
     const images = [
-      { src: 'https://images.unsplash.com/photo-1504198453319-5ce911bafcde?w=1200&q=80&auto=format&fit=crop', title: 'Studio Lights', author: 'Photographer A' },
-      { src: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?w=900&q=80&auto=format&fit=crop', title: 'Portrait Session', author: 'Photographer B' },
-      { src: 'https://images.unsplash.com/photo-1490143142512-6e7f3a3b6c7b?w=800&q=80&auto=format&fit=crop', title: 'Editorial', author: 'Photographer C' },
-      { src: 'https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?w=1100&q=80&auto=format&fit=crop', title: 'Backstage', author: 'Studio Crew' },
-      { src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=700&q=80&auto=format&fit=crop', title: 'Props & Set', author: 'Designer' },
-      { src: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=1000&q=80&auto=format&fit=crop', title: 'Fashion Shoot', author: 'Photographer D' },
-      { src: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=900&q=80&auto=format&fit=crop', title: 'Portrait Closeup', author: 'Photographer E' },
-      { src: 'https://images.unsplash.com/photo-1487260211185-86e1b9f5f6ee?w=800&q=80&auto=format&fit=crop', title: 'Studio Window', author: 'Photographer F' },
-      { src: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80&auto=format&fit=crop', title: 'Editorial Mood', author: 'Studio Team' },
-      { src: 'https://images.unsplash.com/photo-1508921912186-1d1a45ebb3c1?w=1000&q=80&auto=format&fit=crop', title: 'Creative Set', author: 'Photographer G' },
-      { src: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=900&q=80&auto=format&fit=crop', title: 'Natural Light', author: 'Photographer H' },
-      { src: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=800&q=80&auto=format&fit=crop', title: 'Post-Processing', author: 'Editor' }
+      { src: 'img/about-1.jpg', title: 'Photo showcase' , author: 'Studio 8' },
+      { src: 'img/about-2.jpg', title: 'Photo showcase' , author: 'Studio 8' },
+      { src: 'img/hero-3.jpg', title: 'Photo showcase' , author: 'Studio 8' },
+      { src: 'img/hero-4.jpg', title: 'Photo showcase' , author: 'Studio 8' },
+      { src: 'img/hero-1.jpg', title: 'Photo showcase' , author: 'Studio 8' },
+      { src: 'img/hero-2.jpg', title: 'Photo showcase' , author: 'Studio 8' },
+      
     ];
 
     let index = 0;
@@ -267,3 +262,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 })();
+
+// Package selection highlight on booking page
+document.addEventListener('DOMContentLoaded', function () {
+  // package selection highlight
+  const packageCards = document.querySelectorAll('.package-card');
+  packageCards.forEach(card => {
+    card.addEventListener('click', function (e) {
+      // simulate radio click when clicking the whole label
+      const radio = this.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+      packageCards.forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+});

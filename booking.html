@@ -45,9 +45,6 @@
                         <h5 class="mb-1">Graduation Shoot</h5>
                         <small class="text-muted">Sesi 60 menit, 2 outfit, 10 foto retouched</small>
                       </div>
-                      <div class="text-end">
-                        <strong>Rp 750.000</strong>
-                      </div>
                     </div>
                   </div>
                 </label>
@@ -59,9 +56,6 @@
                       <div>
                         <h5 class="mb-1">Self Portrait</h5>
                         <small class="text-muted">Sesi 45 menit, 1 outfit, 5 foto retouched</small>
-                      </div>
-                      <div class="text-end">
-                        <strong>Rp 450.000</strong>
                       </div>
                     </div>
                   </div>
@@ -79,14 +73,35 @@
             <h3 class="fw-bold mb-3">Form Booking</h3>
 
             <form id="booking-form" class="booking-form card p-4 shadow-sm" novalidate>
-              <!-- Variant (wajib) -->
+              <!-- Variant (wajib) - DIUBAH: radio dengan deskripsi dan keterangan harga -->
               <div class="mb-3 form-section">
-                <label for="variant" class="form-label fw-semibold">Varian Paket <span class="text-danger">*</span></label>
-                <select id="variant" name="variant" class="form-select" required>
-                  <option value="" selected disabled>Pilih varian paket</option>
-                  <option value="basic">Basic (sesuai paket)</option>
-                  <option value="premium">Premium (retouch tambahan)</option>
-                </select>
+                <label class="form-label fw-semibold">Varian Paket <span class="text-danger">*</span></label>
+
+                <div class="list-group">
+                  <label class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="variant" id="variant-basic" value="basic" required>
+                      <label class="form-check-label ms-2" for="variant-basic">
+                        <strong>Basic</strong>
+                        <div class="text-muted small">Sesuai rincian paket — retouch standar, pengiriman hasil dalam 7 hari kerja.</div>
+                      </label>
+                    </div>
+                    <div class="text-end small text-muted" aria-hidden="true">Rp 0 (termasuk)</div>
+                  </label>
+
+                  <label class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="variant" id="variant-premium" value="premium">
+                      <label class="form-check-label ms-2" for="variant-premium">
+                        <strong>Premium</strong>
+                        <div class="text-muted small">Tambahan retouch profesional, prioritas editing, ekstra koreksi warna.</div>
+                      </label>
+                    </div>
+                    <div class="text-end small text-muted" aria-hidden="true">+ Rp 150.000</div>
+                  </label>
+                </div>
+
+                <small class="form-text text-muted">Keterangan harga: nilai yang tampil adalah tambahan pada harga paket dasar. Total akhir akan dikonfirmasi lewat email.</small>
               </div>
 
               <!-- Extra (opsional radio) -->
@@ -108,30 +123,7 @@
                 </div>
               </div>
 
-              <!-- Payment method (wajib) -->
-              <div class="mb-3 form-section">
-                <label class="form-label fw-semibold">Metode Pembayaran <span class="text-danger">*</span></label>
-                <div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="payment" id="pay-bank" value="bank" required>
-                    <label class="form-check-label" for="pay-bank">Transfer Bank</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="payment" id="pay-card" value="card" required>
-                    <label class="form-check-label" for="pay-card">Kartu Kredit/Debit</label>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Use as giftcard (opsional) -->
-              <div class="mb-3 form-section">
-                <div class="form-check form-switch">
-                  <input class="form-check-input" type="checkbox" id="use-gift" name="useGift">
-                  <label class="form-check-label" for="use-gift">Gunakan sebagai giftcard</label>
-                </div>
-              </div>
-
-              <!-- Personal data (wajib jika not giftcard) -->
+              <!-- Personal data -->
               <div id="personal-data" class="mb-3 form-section">
                 <label class="form-label fw-semibold">Data Diri <span class="text-danger" id="pd-required">*</span></label>
                 <div class="mb-2">
@@ -155,16 +147,24 @@
                 <small class="form-text text-muted">Pilih tanggal dan jam yang tersedia. Konfirmasi akhir akan dikirim via email.</small>
               </div>
 
-              <!-- Optional note -->
-              <div class="mb-3">
-                <label for="note" class="form-label">Catatan (opsional)</label>
-                <textarea id="note" name="note" class="form-control" rows="2" placeholder="Permintaan khusus, outfit, atau catatan lain"></textarea>
+              <!-- Metode Pembayaran (dipindah & diubah jadi dropdown) -->
+              <div class="mb-3 form-section">
+                <label for="payment" class="form-label fw-semibold">Metode Pembayaran <span class="text-danger">*</span></label>
+                <select id="payment" name="payment" class="form-select" required>
+                  <option value="" selected disabled>Pilih metode pembayaran</option>
+                  <option value="bank">Transfer Bank</option>
+                  <option value="bank">Dana</option>
+                  <option value="bank">Spay</option>
+                  <option value="bank">OVO</option>
+                  <option value="bank">Gopay</option>
+                </select>
               </div>
 
               <div class="d-flex justify-content-between align-items-center">
                 <a href="index.html" class="btn btn-outline-dark">Kembali</a>
                 <button type="submit" class="btn btn-dark">Konfirmasi Booking</button>
               </div>
+
             </form>
           </div>
         </div>
@@ -176,6 +176,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Booking JS -->
-  <script src="booking.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
