@@ -1,0 +1,467 @@
+/* styles.css
+   - Dominant white background, black accents
+   - No inline <style> in HTML
+   - Parallax hero background and glass-like header
+*/
+
+/* Base */
+:root{
+  --bg: #ffffff;
+  --accent: #000000;
+  --muted: #6c6c6c;
+  --glass-bg: rgba(255,255,255,0.75);
+  --glass-border: rgba(0,0,0,0.06);
+  --transition: 400ms cubic-bezier(.2,.8,.2,1);
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+body { background: var(--bg); color: var(--accent); }
+
+/* Header (glassmorphism) */
+.site-header .navbar{
+  background: var(--glass-bg);
+  backdrop-filter: blur(6px) saturate(120%);
+  border-bottom: 1px solid var(--glass-border);
+  padding: .6rem 0;
+}
+
+.logo-box{
+  width:40px; height:40px; border-radius:8px;
+  background:var(--accent); color:var(--bg);
+  display:inline-flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:1.05rem;
+}
+
+.brand-text { text-transform: lowercase; font-weight:600; letter-spacing:0.02em; color:var(--accent); }
+
+/* Nav buttons */
+.nav-btn { border-radius: .45rem; padding: .45rem .9rem; }
+.nav-btn.btn-outline-dark { border-color: rgba(0,0,0,0.12); color:var(--accent); }
+.nav-btn.btn-dark { background:var(--accent); border-color:var(--accent); }
+
+/* Navbar buttons: white text on hover with smooth transition */
+.navbar .nav-btn {
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.navbar .nav-btn.btn-outline-dark:hover,
+.navbar .nav-btn.btn-outline-dark:focus {
+  background: var(--accent);
+  color: #fff !important;
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.navbar .nav-btn.btn-dark:hover,
+.navbar .nav-btn.btn-dark:focus {
+  background: rgba(0,0,0,0.9);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* HERO SECTION — UPDATED */
+.hero-section{
+  height: 100vh; /* Hero lebih besar (full screen) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  color: #fff;
+  background-image: url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=464&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
+  position: relative;
+  padding: 0;
+}
+
+/* Dark overlay */
+.hero-section::before{
+  content: "";
+  position: absolute;
+  inset:0;
+  background: rgba(0,0,0,0.45);
+  z-index:1;
+}
+
+/* Ensure content on top */
+.hero-section .container{
+  position: relative;
+  z-index: 2;
+}
+
+.hero-title{
+  color: #fff;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.5);
+}
+
+.hero-sub{
+  color: #f1f1f1;
+  text-shadow: 0 4px 14px rgba(0,0,0,0.45);
+}
+/* Sections */
+section { padding-top: 4rem; padding-bottom: 4rem; }
+.section-animate { opacity: 0; transform: translateY(20px); transition: var(--transition); }
+.section-animate.visible { opacity:1; transform: translateY(0); }
+
+/* About advantages */
+.advantages li { margin-bottom: .5rem; color: var(--muted); }
+
+/* === ABOUT SECTION IMPROVED === */
+
+.about-img-wrapper {
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.about-img-wrapper img {
+  border-radius: 14px;
+  width: 100%;
+  height: auto;
+}
+
+/* Text & list styling */
+#about h2 {
+  color: #000;
+  letter-spacing: -0.5px;
+}
+
+#about p {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+.about-list li {
+  display: flex;
+  align-items: center;
+  margin-bottom: .6rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.about-list .bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #000;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+
+/* Cards */
+.card { border-radius: 12px; }
+
+/* Footer */
+footer { background: transparent; color: var(--muted); }
+
+/* Reviews — professional cards */
+.reviews-grid .review-card {
+  border-radius: 12px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  overflow: hidden;
+  background: #fff;
+  color: #111;
+}
+.reviews-grid .review-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(12,12,12,0.08);
+}
+
+.review-card .avatar {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid rgba(0,0,0,0.06);
+}
+
+.review-card h5 { font-size: 1rem; font-weight:600; margin-bottom:0.05rem; }
+.review-card small { font-size: 0.82rem; }
+
+/* Rating stars */
+.rating { display: inline-flex; gap: 4px; align-items: center; color: #FFC107; }
+.rating .star { fill: currentColor; opacity: 0.98; }
+
+
+/* Blockquote / review text */
+.review-card blockquote { margin: 0; padding: 0; color: #333; font-style: normal; }
+.review-card blockquote p { font-size: 0.95rem; line-height:1.5; }
+
+/* Small meta */
+.review-card time { color: var(--muted); font-size: 0.78rem; }
+
+/* Booking steps — professional layout */
+.booking-section { background: transparent; }
+.booking-steps { position: relative; }
+
+/* Step card */
+.step-card {
+  border-radius: 12px;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  background: #fff;
+}
+.step-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(12,12,12,0.06); }
+
+/* Number badge */
+.step-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* Icon on the right */
+.step-icon { color: rgba(0,0,0,0.45); }
+
+/* Connector line between steps (desktop) */
+@media (min-width: 768px) {
+  .booking-steps {
+    display: flex;
+    gap: 1.5rem;
+    align-items: stretch;
+  }
+  .booking-steps .col-md-4 { flex: 1 1 0; }
+  .booking-steps::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 6%;
+    right: 6%;
+    height: 2px;
+    background: rgba(0,0,0,0.04);
+    z-index: 0;
+    transform: translateY(-50%);
+  }
+  .step-card { position: relative; z-index: 1; }
+}
+
+/* Text sizing */
+.step-card h5 { font-size: 1rem; margin-bottom: 0.15rem; }
+.step-card p { margin: 0; }
+
+/* CTA spacing */
+.booking-cta a { min-width: 160px; }
+
+/* Mobile tweaks */
+@media (max-width: 767.98px) {
+  .booking-steps::before { display: none; }
+  .step-card { gap: 0.75rem; padding: 0.9rem; }
+}
+
+/* Responsive tweaks */
+@media (max-width: 767.98px){
+  .hero-title { font-size: 1.6rem; }
+  .hero-section { background-attachment: scroll; } /* mobile performance */
+}
+@media (max-width: 575.98px) {
+  .review-card { padding: 1rem; }
+  .review-card .avatar { width: 56px; height: 56px; }
+}
+
+/* Small utility */
+.shadow-sm { box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+
+.booking-section.bg-gray,
+.bg-gray {
+  background-color: #f5f6f8;
+}
+
+/* Optional: sedikit jarak dan batas lembut agar terlihat rapi */
+.booking-section.bg-gray {
+  border-top: 1px solid rgba(0,0,0,0.03);
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+}
+
+/* Footer — professional appearance */
+.site-footer {
+  background: #0b1220;
+  color: #c9d1d9;
+  padding: 2.25rem 0;
+}
+.site-footer h5,
+.site-footer h6 { color: #ffffff; margin-bottom: 0.5rem; }
+.site-footer p, .site-footer small { color: rgba(255,255,255,0.72); }
+
+.site-footer .footer-link {
+  display: inline-block;
+  color: rgba(255,255,255,0.78);
+  text-decoration: none;
+  margin-bottom: .375rem;
+  transition: color 160ms ease, transform 160ms ease;
+}
+.site-footer .footer-link:hover { color: #fff; transform: translateX(4px); }
+
+.site-footer .social-btn {
+  width:40px; height:40px; border-radius:8px;
+  display:inline-flex; align-items:center; justify-content:center;
+  background: rgba(255,255,255,0.03); color: #fff;
+  transition: background 180ms ease, transform 160ms ease;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+.site-footer .social-btn:hover {
+  background: var(--accent);
+  transform: translateY(-3px);
+  color: #fff;
+  border-color: rgba(0,0,0,0.08);
+}
+
+/* Footer separator */
+.site-footer .footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.04);
+  margin-top: 1.25rem;
+  padding-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .5rem;
+}
+.site-footer .footer-bottom small { color: rgba(255,255,255,0.56); }
+
+/* Responsive tweaks for footer */
+@media (max-width: 767.98px) {
+  .site-footer .text-md-end { text-align: left !important; }
+  .site-footer .social-btn { margin-right: 6px; }
+}
+
+/* Booking page specific */
+.package-list { padding: 0; }
+.package-card {
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  border: 1px solid rgba(0,0,0,0.04);
+  background: #fff;
+  padding: 1rem;
+  display: block;
+}
+.package-card input { display: inline-block; vertical-align: middle; }
+.package-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(12,12,12,0.06); }
+.package-card.selected {
+  border-color: var(--accent);
+  box-shadow: 0 14px 32px rgba(0,0,0,0.06);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+}
+
+/* Booking form */
+.booking-form { border-radius: 12px; }
+.booking-form .form-section { margin-bottom: 1rem; }
+.booking-form .form-label { color: #111; font-weight:600; }
+
+/* Small helper */
+.form-text { color: var(--muted); }
+
+/* Ensure disabled/hidden fields look subtle */
+.hidden { display: none !important; }
+
+/* Showcase / Masonry-style gallery (Pinterest-like) */
+.masonry-grid {
+  column-gap: 1rem;
+  width: 100%;
+  column-count: 4;
+  margin: 0 auto;
+}
+
+@media (max-width: 1199.98px) {
+  .masonry-grid { column-count: 3; }
+}
+@media (max-width: 767.98px) {
+  .masonry-grid { column-count: 2; column-gap: 0.75rem; }
+}
+@media (max-width: 479.98px) {
+  .masonry-grid { column-count: 1; }
+}
+
+.masonry-item {
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 1rem;
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(12,12,12,0.06);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.masonry-item:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(12,12,12,0.10);
+}
+.masonry-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 220ms ease;
+}
+.item-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.6rem 0.8rem;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 100%);
+  color: #fff;
+  font-size: 0.9rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.item-overlay .title { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 75%; }
+.item-overlay .meta { font-size: 0.8rem; opacity: 0.92; }
+.masonry-item:hover img { transform: scale(1.03); }
+
+/* Ensure modal image stands out on dark backdrop */
+.modal-backdrop.show { background-color: rgba(0,0,0,0.6); }
+.modal-content img { border-radius: 10px; }
+
+/* Clients page: sidebar & client cards */
+.sidebar-card { border-radius: 12px; }
+.sidebar-card .nav-link { color: #333; }
+.sidebar-card .nav-link:hover { color: var(--accent); }
+
+.client-card {
+  border-radius: 12px;
+  background: #fff;
+  padding: 1rem;
+  box-shadow: 0 10px 26px rgba(12,12,12,0.04);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.client-card:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(12,12,12,0.08); }
+
+.client-meta { font-size: 0.9rem; color: var(--muted); }
+.client-avatar {
+  width:56px; height:56px; border-radius:10px; object-fit:cover;
+  border: 2px solid rgba(0,0,0,0.04);
+}
+
+/* Detail area inside card */
+.client-detail {
+  background: #fbfbfb;
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-top: 0.6rem;
+  font-size: 0.9rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 767.98px) {
+  .sidebar-card.sticky-top { position: static; }
+}

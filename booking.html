@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booking — Studio 8</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white text-dark">
+
+  <header class="site-header fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+          <div class="logo-box">8</div>
+          <span class="brand-text">studio 8</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-5 mt-4">
+    <section class="py-5 booking-section bg-gray">
+      <div class="container">
+        <div class="row g-4">
+          <!-- LEFT: Paket -->
+          <div class="col-lg-6">
+            <h3 class="fw-bold mb-3">Pilih Paket</h3>
+
+            <form id="package-form" aria-label="Pilih paket">
+              <div class="list-group package-list">
+                <label class="list-group-item package-card mb-3" data-package="graduation">
+                  <input class="form-check-input me-2" type="radio" name="package" value="graduation" required>
+                  <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h5 class="mb-1">Graduation Shoot</h5>
+                        <small class="text-muted">Sesi 60 menit, 2 outfit, 10 foto retouched</small>
+                      </div>
+                      <div class="text-end">
+                        <strong>Rp 750.000</strong>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="list-group-item package-card mb-3" data-package="self-portrait">
+                  <input class="form-check-input me-2" type="radio" name="package" value="self-portrait">
+                  <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <h5 class="mb-1">Self Portrait</h5>
+                        <small class="text-muted">Sesi 45 menit, 1 outfit, 5 foto retouched</small>
+                      </div>
+                      <div class="text-end">
+                        <strong>Rp 450.000</strong>
+                      </div>
+                    </div>
+                  </div>
+                </label>
+
+                <!-- Tambah paket tambahan jika perlu -->
+              </div>
+            </form>
+
+            <p class="small text-muted mt-2">Pilih paket terlebih dahulu untuk melanjutkan pengisian detail di kanan.</p>
+          </div>
+
+          <!-- RIGHT: Form booking -->
+          <div class="col-lg-6">
+            <h3 class="fw-bold mb-3">Form Booking</h3>
+
+            <form id="booking-form" class="booking-form card p-4 shadow-sm" novalidate>
+              <!-- Variant (wajib) -->
+              <div class="mb-3 form-section">
+                <label for="variant" class="form-label fw-semibold">Varian Paket <span class="text-danger">*</span></label>
+                <select id="variant" name="variant" class="form-select" required>
+                  <option value="" selected disabled>Pilih varian paket</option>
+                  <option value="basic">Basic (sesuai paket)</option>
+                  <option value="premium">Premium (retouch tambahan)</option>
+                </select>
+              </div>
+
+              <!-- Extra (opsional radio) -->
+              <div class="mb-3 form-section">
+                <label class="form-label fw-semibold">Extra (opsional)</label>
+                <div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="extra" id="extra-none" value="none" checked>
+                    <label class="form-check-label" for="extra-none">Tidak ada</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="extra" id="extra-30" value="30min">
+                    <label class="form-check-label" for="extra-30">Tambah 30 menit (+Rp 150.000)</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="extra" id="extra-60" value="60min">
+                    <label class="form-check-label" for="extra-60">Tambah 60 menit (+Rp 250.000)</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payment method (wajib) -->
+              <div class="mb-3 form-section">
+                <label class="form-label fw-semibold">Metode Pembayaran <span class="text-danger">*</span></label>
+                <div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment" id="pay-bank" value="bank" required>
+                    <label class="form-check-label" for="pay-bank">Transfer Bank</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment" id="pay-card" value="card" required>
+                    <label class="form-check-label" for="pay-card">Kartu Kredit/Debit</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Use as giftcard (opsional) -->
+              <div class="mb-3 form-section">
+                <div class="form-check form-switch">
+                  <input class="form-check-input" type="checkbox" id="use-gift" name="useGift">
+                  <label class="form-check-label" for="use-gift">Gunakan sebagai giftcard</label>
+                </div>
+              </div>
+
+              <!-- Personal data (wajib jika not giftcard) -->
+              <div id="personal-data" class="mb-3 form-section">
+                <label class="form-label fw-semibold">Data Diri <span class="text-danger" id="pd-required">*</span></label>
+                <div class="mb-2">
+                  <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Nama lengkap" required>
+                </div>
+                <div class="mb-2">
+                  <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="mb-0">
+                  <input type="tel" class="form-control" id="phone" name="phone" placeholder="No. Handphone" required>
+                </div>
+              </div>
+
+              <!-- Date & time (wajib jika not giftcard) -->
+              <div id="schedule" class="mb-3 form-section">
+                <label class="form-label fw-semibold">Tanggal & Waktu Booking <span class="text-danger" id="dt-required">*</span></label>
+                <div class="d-flex gap-2">
+                  <input type="date" id="date" name="date" class="form-control" required>
+                  <input type="time" id="time" name="time" class="form-control" required>
+                </div>
+                <small class="form-text text-muted">Pilih tanggal dan jam yang tersedia. Konfirmasi akhir akan dikirim via email.</small>
+              </div>
+
+              <!-- Optional note -->
+              <div class="mb-3">
+                <label for="note" class="form-label">Catatan (opsional)</label>
+                <textarea id="note" name="note" class="form-control" rows="2" placeholder="Permintaan khusus, outfit, atau catatan lain"></textarea>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <a href="index.html" class="btn btn-outline-dark">Kembali</a>
+                <button type="submit" class="btn btn-dark">Konfirmasi Booking</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Bootstrap Bundle (Popper + JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Booking JS -->
+  <script src="booking.js"></script>
+</body>
+</html>

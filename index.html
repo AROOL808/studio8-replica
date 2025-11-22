@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Studio 8 — Landing Page</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts (optional) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white text-dark">
+
+  <!-- Header -->
+  <header class="site-header fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+          <div class="logo-box">8</div>
+          <span class="brand-text">studio 8</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+          <div class="navbar-nav gap-2">
+            <button class="btn btn-outline-dark nav-btn">Tentang Kami</button>
+            <a href="booking.html"><button class="btn btn-outline-dark nav-btn">Booking</button></a>
+            <button class="btn btn-outline-dark nav-btn">Kalender</button>
+            <button class="btn btn-outline-dark nav-btn">Showcase</button>
+            <button class="btn btn-dark text-white nav-btn">Login</button>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Hero (parallax) -->
+  <section id="hero" class="hero-section d-flex align-items-center justify-content-center text-center">
+    <div class="container position-relative z-2">
+        <h1 class="hero-title display-4 fw-bold">Lorem ipsum dolor sit amet</h1>
+        <p class="hero-sub lead mx-auto" style="max-width: 650px;">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.
+        </p>
+        <div class="d-flex gap-2 justify-content-center mt-3">
+            <a class="btn btn-dark btn-lg" href="#booking">Booking Sekarang</a>
+            <a class="btn btn-outline-dark btn-lg" href="#jadwal">Lihat Jadwal</a>
+        </div>
+    </div>
+    </section>
+
+
+  <!-- About section -->
+    <section id="about" class="py-5 section-animate">
+        <div class="container">
+            <div class="row g-5 align-items-center">
+
+            <div class="col-lg-6">
+                <div class="about-img-wrapper shadow-sm">
+                <img 
+                    src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?q=80&w=1200&auto=format&fit=crop&s=placeholder" 
+                    alt="Studio 8" 
+                    class="img-fluid rounded-3"
+                >
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-3">Tentang Studio 8</h2>
+                <p class="text-muted mb-4">
+                Studio 8 merupakan studio fotografi profesional yang menyediakan berbagai layanan seperti foto produk, portrait, hingga editorial. 
+                Dengan peralatan modern dan tim berpengalaman, kami berkomitmen menghadirkan kualitas terbaik untuk setiap klien.
+                </p>
+
+                <ul class="list-unstyled about-list">
+                <li><span class="bullet"></span> Peralatan kamera & lighting modern</li>
+                <li><span class="bullet"></span> Ruang studio luas, bersih, dan fleksibel</li>
+                <li><span class="bullet"></span> Editing & retouching berkualitas tinggi</li>
+                <li><span class="bullet"></span> Harga transparan tanpa biaya tersembunyi</li>
+                </ul>
+            </div>
+
+            </div>
+        </div>
+    </section>
+
+
+  <!-- Cara Booking (diperbarui) -->
+    <section id="booking" class="py-5 booking-section section-animate bg-gray">
+        <div class="container">
+            <div class="d-md-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Cara Booking</h3>
+                <p class="text-muted mb-0">Proses singkat dan transparan — pilih tanggal, isi data, dan datang sesuai jadwal.</p>
+            </div>
+
+            </div>
+
+            <div class="row g-4 booking-steps" role="list">
+            <div class="col-md-4" role="listitem">
+                <article class="card step-card h-100 p-3 shadow-sm">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="step-badge">1</div>
+                    <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">Pilih Tanggal</h5>
+                        <svg class="step-icon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10h5V5h2v5h5v9H2v-9h5z"/></svg>
+                    </div>
+                    <p class="small text-muted mb-0">Pilih slot yang tersedia melalui kalender. Slot terupdate secara realtime.</p>
+                    </div>
+                </div>
+                </article>
+            </div>
+
+            <div class="col-md-4" role="listitem">
+                <article class="card step-card h-100 p-3 shadow-sm">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="step-badge">2</div>
+                    <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">Isi Data & Pembayaran</h5>
+                        <svg class="step-icon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 7a2 2 0 100 4 2 2 0 000-4zm0 6c-4 0-8 2-8 4v1h16v-1c0-2-4-4-8-4z"/></svg>
+                    </div>
+                    <p class="small text-muted mb-0">Isi formulir singkat dan selesaikan pembayaran aman untuk konfirmasi.</p>
+                    </div>
+                </div>
+                </article>
+            </div>
+
+            <div class="col-md-4" role="listitem">
+                <article class="card step-card h-100 p-3 shadow-sm">
+                <div class="d-flex align-items-start gap-3">
+                    <div class="step-badge">3</div>
+                    <div class="flex-grow-1">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">Datang ke Studio</h5>
+                        <svg class="step-icon" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2l4 7h-8l4-7zm0 9a7 7 0 00-7 7v3h14v-3a7 7 0 00-7-7z"/></svg>
+                    </div>
+                    <p class="small text-muted mb-0">Datang sesuai jadwal; tim kami siap membantu selama sesi foto.</p>
+                    </div>
+                </div>
+                </article>
+            </div>
+            </div>
+
+            <div class="mt-4 text-center booking-cta">
+            <a href="#jadwal" class="btn btn-dark btn-lg me-2">Booking Sekarang</a>
+            </div>
+        </div>
+    </section>
+
+  <!-- Reviews -->
+  <section id="reviews" class="py-5 section-animate">
+  <div class="container">
+    <h3 class="fw-bold mb-2">Ulasan Pelanggan</h3>
+    <p class="text-muted mb-4">Pendapat klien kami tentang pengalaman di Studio 8 — cerita nyata dari pelanggan kami.</p>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 reviews-grid" aria-label="Ulasan pelanggan">
+      <div class="col">
+        <article class="card review-card h-100 border-0 shadow-sm p-3" itemscope itemtype="http://schema.org/Review">
+          <div class="d-flex align-items-start gap-3">
+            <img src="https://i.pravatar.cc/80?img=32" alt="Foto Siti" class="avatar rounded-circle" />
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="mb-0" itemprop="author">Siti</h5>
+                  <small class="text-muted">Jakarta</small>
+                </div>
+                <div class="text-end">
+                  <div class="rating" aria-hidden="true" title="5 dari 5">
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                  </div>
+                  <small class="text-muted d-block mt-1"><time datetime="2025-11-01">Nov 1, 2025</time></small>
+                </div>
+              </div>
+
+              <blockquote class="mt-2 mb-0" itemprop="reviewBody">
+                <p class="mb-0">Pelayanan sangat profesional. Hasil fotonya memuaskan dan prosesnya cepat. Sangat rekomendasi!</p>
+              </blockquote>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="col">
+        <article class="card review-card h-100 border-0 shadow-sm p-3" itemscope itemtype="http://schema.org/Review">
+          <div class="d-flex align-items-start gap-3">
+            <img src="https://i.pravatar.cc/80?img=12" alt="Foto Andi" class="avatar rounded-circle" />
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="mb-0" itemprop="author">Andi</h5>
+                  <small class="text-muted">Bandung — Photographer</small>
+                </div>
+                <div class="text-end">
+                  <div class="rating" aria-hidden="true" title="5 dari 5">
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                  </div>
+                  <small class="text-muted d-block mt-1"><time datetime="2025-10-12">Oct 12, 2025</time></small>
+                </div>
+              </div>
+
+              <blockquote class="mt-2 mb-0" itemprop="reviewBody">
+                <p class="mb-0">Studio nyaman dan peralatannya lengkap. Proses booking mudah, tim sangat membantu saat sesi.</p>
+              </blockquote>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="col">
+        <article class="card review-card h-100 border-0 shadow-sm p-3" itemscope itemtype="http://schema.org/Review">
+          <div class="d-flex align-items-start gap-3">
+            <img src="https://i.pravatar.cc/80?img=45" alt="Foto Maya" class="avatar rounded-circle" />
+            <div class="w-100">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="mb-0" itemprop="author">Maya</h5>
+                  <small class="text-muted">Surabaya — Content Creator</small>
+                </div>
+                <div class="text-end">
+                  <div class="rating" aria-hidden="true" title="4.5 dari 5">
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star" viewBox="0 0 20 20" width="18" height="18"><path d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                    <svg class="star half" viewBox="0 0 20 20" width="18" height="18"><defs><linearGradient id="half"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient><path fill="url(#half)" d="M10 1.5l2.6 5.3 5.8.8-4.2 4 1 5.7L10 15.8 4.8 17.3l1-5.7L1.6 7.6l5.8-.8L10 1.5z"/></svg>
+                  </div>
+                  <small class="text-muted d-block mt-1"><time datetime="2025-09-22">Sep 22, 2025</time></small>
+                </div>
+              </div>
+
+              <blockquote class="mt-2 mb-0" itemprop="reviewBody">
+                <p class="mb-0">Timnya ramah, hasil retouch rapi. Cocok buat konten dan portfolio. Akan kembali lagi.</p>
+              </blockquote>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="mt-4 text-center">
+      <a href="#" class="btn btn-outline-dark">Lihat semua ulasan</a>
+    </div>
+  </div>
+</section>
+
+  <!-- Location & Map -->
+  <section id="location" class="py-5 bg-light section-animate">
+    <div class="container">
+      <h3 class="fw-bold mb-4">Lokasi Studio</h3>
+      <div class="row">
+        <div class="col-lg-6 mb-3">
+          <p>Jl. Contoh Alamat No.123, Jakarta (ganti dengan alamat sebenarnya)</p>
+          <ul class="list-unstyled">
+            <li>Telp: +62 812-3456-7890</li>
+            <li>Email: hello@studio8.id</li>
+          </ul>
+        </div>
+        <div class="col-lg-6">
+          <!-- Ganti koordinat/iframe src sesuai lokasi studio kamu -->
+          <div class="ratio ratio-16x9 rounded overflow-hidden shadow-sm">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126917.9788381756!2d106.6296644!3d-6.1744651!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5c6b8e3a2f1%3A0x27b9a7a6a0f0!2sJakarta!5e0!3m2!1sen!2sid!4v1699999999999!5m2!1sen!2sid"
+              style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer (diperbarui) -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="row align-items-start gy-3">
+        <div class="col-md-4">
+          <h5 class="mb-2">Studio 8</h5>
+          <p class="mb-1 small">Jl. Contoh Alamat No.123, Jakarta</p>
+          <p class="mb-0 small">Telp: +62 812-3456-7890 • Email: hello@studio8.id</p>
+        </div>
+
+        <div class="col-md-4">
+          <h6 class="mb-2">Menu Cepat</h6>
+          <ul class="list-unstyled mb-0">
+            <li><a class="footer-link" href="#">Tentang Kami</a></li>
+            <li><a class="footer-link" href="booking.html">Booking</a></li>
+            <li><a class="footer-link" href="#">Kalender</a></li>
+            <li><a class="footer-link" href="#">Showcase</a></li>
+            <li><a class="footer-link" href="#">Login</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-4 text-md-end">
+          <h6 class="mb-2">Ikuti Kami</h6>
+          <div class="d-flex justify-content-md-end align-items-center gap-2">
+            <a class="social-btn" href="#" aria-label="Instagram">
+              <!-- simple Instagram icon -->
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 2h10a5 5 0 015 5v10a5 5 0 01-5 5H7a5 5 0 01-5-5V7a5 5 0 015-5z" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M12 8.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7z" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+            </a>
+            <a class="social-btn" href="#" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 8h2V4h-2c-2 0-3 1-3 3v2H10v3h2v7h3v-7h2.1L18 11h-3V9c0-.6.4-1 1-1z" fill="currentColor"/></svg>
+            </a>
+            <a class="social-btn" href="#" aria-label="Twitter">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M23 4.5c-.8.4-1.6.7-2.5.9a4 4 0 00-7 3v.4A10 10 0 013 5s-4 9 5 13a11 11 0 01-7 2c9 5 20 0 20-11v-.5A7 7 0 0023 4.5z" fill="currentColor"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <small>© 2025 Studio 8. All rights reserved.</small>
+        <small>Designed with care • <a class="footer-link" href="#">Terms</a> • <a class="footer-link" href="#">Privacy</a></small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle (Popper + JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script src="script.js"></script>
+</body>
+</html>

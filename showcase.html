@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Showcase — Studio 8</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-white text-dark">
+
+  <!-- Header -->
+  <header class="site-header fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+          <div class="logo-box">8</div>
+          <span class="brand-text">studio 8</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-5 mt-4">
+    <section class="py-5">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h3 class="fw-bold mb-0">Showcase</h3>
+            <p class="text-muted mb-0 small">Galeri dinamis — susunan ala Pinterest, klik untuk melihat detail.</p>
+          </div>
+          <div>
+            <a href="index.html" class="btn btn-outline-dark btn-sm">Kembali</a>
+          </div>
+        </div>
+
+        <!-- Masonry container -->
+        <div id="masonry" class="masonry-grid" aria-live="polite"></div>
+
+        <div class="text-center mt-4">
+          <button id="loadMore" class="btn btn-outline-dark">Load more</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Lightbox modal -->
+  <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content bg-transparent border-0">
+        <div class="modal-body p-0 position-relative">
+          <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+          <img id="lightboxImage" src="" alt="" class="img-fluid w-100 rounded" />
+          <div id="lightboxCaption" class="mt-2 text-white small"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Bundle (Popper + JS) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Reuse project script (script.js) which is extended to handle showcase -->
+  <script src="script.js"></script>
+</body>
+</html>
