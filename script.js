@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 })();
 
-// Package selection highlight on booking page
+// // Package selection highlight on booking page
 document.addEventListener('DOMContentLoaded', function () {
   // package selection highlight
   const packageCards = document.querySelectorAll('.package-card');
