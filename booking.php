@@ -1,3 +1,47 @@
+<?php
+include 'database_handle.php';
+//fetch nama paket
+$daftar_paket = get_data("paket", "nama,paket_id,deskripsi")['data'];
+$daftar_extra = get_data("extra", "*")['data'];
+
+//fetch varian paket dimana paket id sesuai parameter di url
+$varian_paket = get_data("varian", "*", [
+    "paket_id" => "eq." . ($_GET['paket_id'] ?? 1)
+])['data'];
+
+
+if(isset($_POST)){
+    $response = insert_data_order(
+        $_POST['varian'],
+        $_POST['fullName'],
+        $_POST['email'],
+        $_POST['phone'],
+        $_POST['date'],
+        $_POST['time']
+    );
+    // var_dump($response);
+    // Lakukan proses insert extra jika ada
+    $extras = [];
+
+    // Loop semua $_POST untuk mencari key yang mulai dengan "extra"
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'extra') === 0) { // key dimulai dengan 'extra'
+            $extras[] = $value; // value adalah extra_id
+        }
+    }
+
+    // Setelah order berhasil dibuat
+    $order_id = $response['data'][0]['order_id'];
+
+    // Insert setiap extra ke tabel extra_order
+    foreach ($extras as $extra_id) {
+      $response = insert_extra_order($order_id, $extra_id);
+      var_dump($response);
+  }
+
+}
+
+?>
 <!doctype html>
 <html lang="id">
 <head>
@@ -35,35 +79,24 @@
           <div class="col-lg-6">
             <h3 class="fw-bold mb-3">Pilih Paket</h3>
 
-            <form id="package-form" aria-label="Pilih paket">
-              <div class="list-group package-list">
-                <label class="list-group-item package-card mb-3" data-package="graduation">
-                  <input class="form-check-input me-2" type="radio" name="package" value="graduation" required>
+            <div class="list-group package-list"> 
+              <?php foreach($daftar_paket as $paket):?>
+              <a class="text-decoration-none" href='booking.php?paket_id=<?=$paket['paket_id']?>'>
+                <label class="list-group-item package-card mb-3 <?= $_GET['paket_id'] == $paket['paket_id'] ? 'selected' : ''?>" data-package="graduation">
                   <div>
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
-                        <h5 class="mb-1">Graduation Shoot</h5>
-                        <small class="text-muted">Sesi 60 menit, 2 outfit, 10 foto retouched</small>
+                        <h5 class="mb-1"><?=$paket['nama']?></h5>
+                        <small class="text-muted"><?=$paket['deskripsi']?></small>
                       </div>
                     </div>
                   </div>
                 </label>
+              </a>
+              <?php endforeach;?>
 
-                <label class="list-group-item package-card mb-3" data-package="self-portrait">
-                  <input class="form-check-input me-2" type="radio" name="package" value="self-portrait">
-                  <div>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h5 class="mb-1">Self Portrait</h5>
-                        <small class="text-muted">Sesi 45 menit, 1 outfit, 5 foto retouched</small>
-                      </div>
-                    </div>
-                  </div>
-                </label>
-
-                <!-- Tambah paket tambahan jika perlu -->
-              </div>
-            </form>
+              <!-- Tambah paket tambahan jika perlu -->
+            </div>
 
             <p class="small text-muted mt-2">Pilih paket terlebih dahulu untuk melanjutkan pengisian detail di kanan.</p>
           </div>
@@ -72,33 +105,26 @@
           <div class="col-lg-6">
             <h3 class="fw-bold mb-3">Form Booking</h3>
 
-            <form id="booking-form" class="booking-form card p-4 shadow-sm" novalidate>
+            <form id="booking-form" class="booking-form card p-4 shadow-sm" action="" method="POST">
               <!-- Variant (wajib) - DIUBAH: radio dengan deskripsi dan keterangan harga -->
               <div class="mb-3 form-section">
                 <label class="form-label fw-semibold">Varian Paket <span class="text-danger">*</span></label>
 
                 <div class="list-group">
+                  <?php foreach($varian_paket as $varian):?>
                   <label class="list-group-item d-flex justify-content-between align-items-start">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="variant" id="variant-basic" value="basic" required>
-                      <label class="form-check-label ms-2" for="variant-basic">
-                        <strong>Basic</strong>
-                        <div class="text-muted small">Sesuai rincian paket — retouch standar, pengiriman hasil dalam 7 hari kerja.</div>
+                      <input type="hidden" name="paket_id" value="<?=$_GET['paket_id']?>">
+                      <input class="form-check-input" type="radio" name="varian" id="varian-<?=$varian['varian_id']?>" value="<?=$varian['varian_id']?>" required>
+                      <label class="form-check-label ms-2" for="varian-<?=$varian['varian_id']?>">
+                        <strong><?=$varian['nama']?></strong>
+                        <div class="text-muted small"><?= $varian['deskripsi']?></div>
                       </label>
                     </div>
-                    <div class="text-end small text-muted" aria-hidden="true">Rp 0 (termasuk)</div>
+                    <div class="text-end small text-muted" aria-hidden="true">Rp <?=$varian['harga']?></div>
                   </label>
+                  <?php endforeach;?>
 
-                  <label class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="variant" id="variant-premium" value="premium">
-                      <label class="form-check-label ms-2" for="variant-premium">
-                        <strong>Premium</strong>
-                        <div class="text-muted small">Tambahan retouch profesional, prioritas editing, ekstra koreksi warna.</div>
-                      </label>
-                    </div>
-                    <div class="text-end small text-muted" aria-hidden="true">+ Rp 150.000</div>
-                  </label>
                 </div>
 
                 <small class="form-text text-muted">Keterangan harga: nilai yang tampil adalah tambahan pada harga paket dasar. Total akhir akan dikonfirmasi lewat email.</small>
@@ -108,18 +134,12 @@
               <div class="mb-3 form-section">
                 <label class="form-label fw-semibold">Extra (opsional)</label>
                 <div>
+                  <?php foreach($daftar_extra as $extra):?>
                   <div class="form-check">
-                    <input class="form-check-input" type="radio" name="extra" id="extra-none" value="none" checked>
-                    <label class="form-check-label" for="extra-none">Tidak ada</label>
+                    <input class="form-check-input" type="checkbox" name="extra<?=$extra['extra_id']?>" id="extra-<?=$extra['extra_id']?>" value="<?=$extra['extra_id']?>">
+                    <label class="form-check-label" for="extra-<?=$extra['extra_id']?>"><?=$extra['nama']?> (+Rp <?=$extra['harga']?>)</label>
                   </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="extra" id="extra-30" value="30min">
-                    <label class="form-check-label" for="extra-30">Tambah 30 menit (+Rp 150.000)</label>
-                  </div>
-                  <div class="form-check">
-                    <input class="form-check-input" type="radio" name="extra" id="extra-60" value="60min">
-                    <label class="form-check-label" for="extra-60">Tambah 60 menit (+Rp 250.000)</label>
-                  </div>
+                  <?php endforeach; ?>
                 </div>
               </div>
 
