@@ -1,5 +1,7 @@
 <?php
+session_start();
 include 'database_handle.php';
+require_once dirname(__FILE__) . '/payment-gateway/Midtrans.php';
 //fetch nama paket
 $daftar_paket = get_data("paket", "nama,paket_id,deskripsi")['data'];
 $daftar_extra = get_data("extra", "*")['data'];
@@ -10,34 +12,104 @@ $varian_paket = get_data("varian", "*", [
 ])['data'];
 
 
-if(isset($_POST)){
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+  // initialisasi order id
+  $order_id = rand();
+  $_SESSION['order_id'] = $order_id;
+  // Insert data order terlebih dahulu
     $response = insert_data_order(
-        $_POST['varian'],
-        $_POST['fullName'],
-        $_POST['email'],
-        $_POST['phone'],
-        $_POST['date'],
-        $_POST['time']
-    );
-    // var_dump($response);
-    // Lakukan proses insert extra jika ada
-    $extras = [];
+      $order_id,
+      $_POST['varian'],
+      $_POST['fullName'],
+      $_POST['email'],
+      $_POST['phone'],
+      $_POST['date'],
+      $_POST['time'],
+      'PENDING'
+  );
+  // var_dump($response);
 
-    // Loop semua $_POST untuk mencari key yang mulai dengan "extra"
-    foreach ($_POST as $key => $value) {
-        if (strpos($key, 'extra') === 0) { // key dimulai dengan 'extra'
-            $extras[] = $value; // value adalah extra_id
-        }
-    }
 
-    // Setelah order berhasil dibuat
-    $order_id = $response['data'][0]['order_id'];
+  // Setelah order berhasil dibuat
+  $order_id = $response['data'][0]['order_id'];
 
-    // Insert setiap extra ke tabel extra_order
-    foreach ($extras as $extra_id) {
-      $response = insert_extra_order($order_id, $extra_id);
-      var_dump($response);
+  
+  // Lakukan proses insert extra jika ada
+  $extras = [];
+
+  // Loop semua $_POST untuk mencari key yang mulai dengan "extra"
+  foreach ($_POST as $key => $value) {
+      if (strpos($key, 'extra') === 0) { // key dimulai dengan 'extra'
+          $extras[] = $value; // value adalah extra_id
+      }
   }
+    // Insert setiap extra ke tabel extra_order
+  foreach ($extras as $extra_id) {
+    $response = insert_extra_order($order_id, $extra_id);
+    var_dump($response);
+  }
+
+  update_order_status($notif->order_id, 'BOOKED');    
+
+  // cek status pembayaran dan redirect ke midtrans
+  // konfigurasi midtrans
+  Midtrans\Config::$serverKey = loadEnvValue('SERVER_KEY');
+  Midtrans\Config::$isProduction = false;
+  Midtrans\Config::$is3ds = true;
+  Midtrans\Config::$isSanitized = true;
+
+  
+  $total_extra = 0;
+  if($extras != []){
+    
+      // Fetch harga extra secara bulk
+      $data_harga_extra = get_extra_prices($extras);
+    foreach ($data_harga_extra['data'] as $row) {
+        $total_extra += $row['harga'];
+    }
+  }
+
+  // hitung harga varian 
+  $data_varian = get_data_varian($_POST['varian'])['data'][0];
+  $harga_varian = intval($data_varian['harga']);
+  // total harga
+  $total_harga = $harga_varian + $total_extra;
+
+  $params = array(
+    'transaction_details' => array(
+        'order_id' => $order_id,
+        'gross_amount' => $total_harga
+    ),
+    'customer_details' => array(
+        'first_name' => $_POST['fullName'],
+        'email' => $_POST['email'],
+        'phone' => $_POST['phone'],
+        'date' => $_POST['date'],
+        'time' => $_POST['time']
+    ),'items_details' => array(
+        array(
+            'id' => $_POST['varian'],
+            'price' => $harga_varian,
+            'quantity' => 1,
+            'name' => $data_varian['nama']
+        )
+    ),'callback_url' => array(
+        'finish' => 'https://9c0119542ff1.ngrok-free.app/studio8-replica/test.php'
+    )
+
+  );
+
+  try {
+    // Get Snap Payment Page URL
+    $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
+    
+    // Redirect to Snap Payment Page
+    header('Location: ' . $paymentUrl);
+  }
+  catch (Exception $e) {
+    echo $e->getMessage();
+  }
+
 
 }
 

@@ -110,15 +110,17 @@ function delete_data($table, $filters = [])
     return supabaseRequest("DELETE", $table, $filters);
 }
 
-function insert_data_order($varian_id ,$nama, $email, $nomor_hp, $tanggal, $waktu)
+function insert_data_order($order_id,$varian_id ,$nama, $email, $nomor_hp, $tanggal, $waktu, $status =  'PENDING')
 {
     $body = [
+        "order_id"  => $order_id,
         "varian_id" => $varian_id,
         "nama"      => $nama,
         "email"     => $email,
         "nomor_hp"  => $nomor_hp,
         "tanggal"   => $tanggal,
-        "waktu"     => $waktu
+        "waktu"     => $waktu,
+        "status"    => $status
     ];
 
     return supabaseRequest("POST", "order", [], $body);
@@ -133,8 +135,50 @@ function insert_extra_order($order_id, $extra_id)
 
     return supabaseRequest("POST", "extra_order", [], $body);
 }
+
+function get_order_data($filters = [])
+{
+    return supabaseRequest("GET", "order", array_merge([
+        "select" => "*, varian(*, paket(*)), extra_order(*, extra(*))"
+    ], $filters));
+}
+
+function get_order_detail($order_id, $filters = [])
+{
+    return supabaseRequest("GET", "order", array_merge([
+        "select" => "*, varian(*, paket(*)), extra_order(*, extra(*))",
+        "order_id" => "eq." . $order_id
+    ], $filters));
+}
+
+function get_extra_prices($extras = [])
+{
+    return supabaseRequest("GET", "extra", array_merge([
+        "select" => "extra_id, nama, harga",
+        "extra_id" => "in.(" . implode(",", $extras) . ")"
+
+
+    ]));
+}
+
+function get_data_varian($varian_id)
+{
+    return supabaseRequest("GET", "varian", [
+        "select"   => "*",
+        "paket_id" => "eq." . $varian_id
+    ]);
+}
+
+function update_order_status($order_id, $status)
+{
+    return supabaseRequest("PATCH", "order", [
+        "order_id" => "eq." . $order_id
+    ], [
+        "status" => $status
+    ]);
+}
 /* ------------------------------------------------------
-   Example usage (you can remove these examples)
+   Example usage (you can remove these examples)    
 ------------------------------------------------------- */
 
 // 1. GET all paket

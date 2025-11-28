@@ -1,3 +1,18 @@
+<?php
+include 'database_handle.php';
+// Proses penghapusan order jika parameter delete ada di URL
+if(isset($_GET['delete'])){
+  $response = supabaseRequest("DELETE", "order", [
+    "order_id" => "eq." . $_GET['delete']
+  ]);
+  // Redirect kembali ke halaman clients.php setelah penghapusan
+  header("Location: clients.php");
+  exit();
+}
+
+//fetch daftar clients
+$clients = get_order_data()['data'];
+?>
 <!doctype html>
 <html lang="id">
 <head>
@@ -61,7 +76,40 @@
             </div>
 
             <div id="clientsList" class="row g-3">
-              <!-- List diisi secara dinamis oleh script.js -->
+              <!-- daftar client -->
+              <?php foreach($clients as $client): ?>
+               <div class="client-card d-flex gap-3 align-items-start">
+                 <div class="flex-grow-1">
+                   <div class="d-flex justify-content-between align-items-start">
+                     <div>
+                       <h5 class="mb-1"><?=$client['nama']?></h5>
+                       <div class="client-meta"><?=$client['varian']['paket']['nama']?> • <?=$client['varian']['nama']?> • <strong> <?=$client['status']?></strong></div>
+                       <div class="client-meta"><?=$client['nomor_hp']?> • <?=$client['email']?></div>
+                       <div class="client-meta">Layanan Tambahan: | 
+                        <?php foreach($client['extra_order'] as $extra):?>
+                         <?=$extra['extra']['nama']?> | 
+                        <?php endforeach;?>
+                        </div>
+                     </div>
+                     <div class="text-end">
+                       <?php $waktu = new DateTime('1999-09-09 '.$client['waktu'])?>
+                       <div class="client-meta"><?=$client['tanggal']?> • <?=$waktu->format('H:i')?></div>
+                       <div class="mt-2">
+                         <a href="?delete=<?=$client['order_id']?>"><button class="btn btn-sm btn-dark btn-action" data-id="${c.id}">Hapus</button></a>
+                       </div>
+                     </div>
+                   </div>
+   
+                   <div id="detail-${c.id}" class="client-detail collapse">
+                     <div><strong>Email:</strong> ${c.email}</div>
+                     <div><strong>Telepon:</strong> ${c.phone}</div>
+                     <div><strong>Pembayaran:</strong> ${c.payment}</div>
+                     <div><strong>Catatan:</strong> ${c.note || '-'}</div>
+                   </div>
+
+                 </div>
+               </div>
+              <?php endforeach; ?>
             </div>
 
             <div id="emptyState" class="text-center text-muted mt-4" style="display:none;">
