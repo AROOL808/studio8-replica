@@ -57,20 +57,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sample images (Unsplash) — adjust or replace with local assets as needed
     const images = [
-      { src: 'img/about-1.jpg', title: 'Photo showcase' , author: 'Studio 8' },
-      { src: 'img/about-2.jpg', title: 'Photo showcase' , author: 'Studio 8' },
-      { src: 'img/hero-3.jpg', title: 'Photo showcase' , author: 'Studio 8' },
-      { src: 'img/hero-4.jpg', title: 'Photo showcase' , author: 'Studio 8' },
-      { src: 'img/hero-1.jpg', title: 'Photo showcase' , author: 'Studio 8' },
-      { src: 'img/hero-2.jpg', title: 'Photo showcase' , author: 'Studio 8' },
-      
+      { src: 'img/about-1.jpg', title: 'Photo showcase', author: 'Studio 8' },
+      { src: 'img/about-2.jpg', title: 'Photo showcase', author: 'Studio 8' },
+      { src: 'img/hero-3.jpg', title: 'Photo showcase', author: 'Studio 8' },
+      { src: 'img/hero-4.jpg', title: 'Photo showcase', author: 'Studio 8' },
+      { src: 'img/hero-1.jpg', title: 'Photo showcase', author: 'Studio 8' },
+      { src: 'img/hero-2.jpg', title: 'Photo showcase', author: 'Studio 8' },
+
     ];
 
     let index = 0;
     const BATCH = 6;
 
     function escapeHtml(text) {
-      return String(text).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+      return String(text).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
     }
 
     function createItem(item) {
@@ -263,6 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // //   });
 // // })();
 
+
 // // // Package selection highlight on booking page
 // document.addEventListener('DOMContentLoaded', function () {
 //   // package selection highlight
@@ -277,3 +278,329 @@ document.addEventListener('DOMContentLoaded', function () {
 //     });
 //   });
 // });
+
+// // Package selection highlight on booking page
+document.addEventListener('DOMContentLoaded', function () {
+  // package selection highlight
+  const packageCards = document.querySelectorAll('.package-card');
+  packageCards.forEach(card => {
+    card.addEventListener('click', function (e) {
+      // simulate radio click when clicking the whole label
+      const radio = this.querySelector('input[type="radio"]');
+      if (radio) radio.checked = true;
+      packageCards.forEach(c => c.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+});
+
+// Paket & Varian Modal Logic
+function initializeEventListeners(packageModal, variantModal) {
+  // package event listeners
+  const addPackageBtn = document.getElementById("addModalPackage");
+  if (addPackageBtn) {
+    addPackageBtn.addEventListener("click", () => addModalPackage(packageModal));
+  }
+
+  document.addEventListener("click", function (e) {
+    // button tambah varian per paket
+    if (e.target.closest(".addVariantToPackage")) {
+      const button = e.target.closest(".addVariantToPackage");
+      const packageId = button.dataset.packageId;
+      const packageName = button.dataset.packageName;
+
+      addModalVariant(variantModal, packageId, packageName);
+    }
+
+    // package edit button
+    if (e.target.closest(".updateModalPackage")) {
+      const button = e.target.closest(".updateModalPackage");
+      const data = {
+        id: button.dataset.id,
+        nama: button.dataset.nama,
+        deskripsi: button.dataset.deskripsi,
+      };
+      updateModalPackage(data, packageModal);
+    }
+    // variant edit button
+    if (e.target.closest('.updateModalVariant')) {
+      const button = e.target.closest('.updateModalVariant');
+      const data = {
+        id: button.dataset.id,
+        package_id: button.dataset.packageId,
+        nama: button.dataset.nama,
+        harga: button.dataset.harga,
+        deskripsi: button.dataset.deskripsi
+      };
+      updateModalVariant(data, variantModal);
+    }
+
+    // delete button 
+    if (e.target.closest(".deletePackage")) {
+      const button = e.target.closest(".deletePackage");
+      const packageId = button.dataset.id;
+      const packageName = button.dataset.nama;
+      confirmDeletePackage(packageId, packageName);
+    }
+
+    if (e.target.closest(".deleteVariant")) {
+      const button = e.target.closest(".deleteVariant");
+      const variantId = button.dataset.id;
+      const variantName = button.dataset.nama;
+      confirmDeleteVariant(variantId, variantName);
+    }
+
+  });
+
+  //form submit
+  //package form submit
+  const formPackage = document.getElementById("formPackage");
+  if (formPackage) {
+    formPackage.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await handlePackageSubmit(event);
+      if (packageModal) packageModal.hide();
+    });
+  }
+  // variant form submit
+  const formVariant = document.getElementById("formVariant");
+  if (formVariant && variantModal) {
+    formVariant.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await handleVariantSubmit(event);
+      if (variantModal) variantModal.hide();
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  // inisialisasi modal bootstrap
+  const packageModalEl = document.getElementById('modalTambahPaket');
+  const variantModalEl = document.getElementById('modalTambahVarian');
+
+  if (packageModalEl) {
+    packageModalEl.classList.remove('show');
+    packageModalEl.style.display = 'none';
+  }
+  if (variantModalEl) {
+    variantModalEl.classList.remove('show');
+    variantModalEl.style.display = 'none';
+  }
+
+  const packageModal = packageModalEl ? new bootstrap.Modal(packageModalEl, {
+  }) : null;
+  const variantModal = variantModalEl ? new bootstrap.Modal(variantModalEl, {
+  }) : null;
+
+  // inisialisasi event listener untuk modal
+  initializeEventListeners(packageModal, variantModal);
+});
+
+function setModalTitle(titleId, text) {
+  const titleElement = document.getElementById(titleId);
+  if (titleElement) {
+    titleElement.innerText = text;
+  }
+}
+
+function fillForm(data) {
+  Object.keys(data).forEach(key => {
+    const el = document.getElementById(key);
+    if (!el) return;
+    if (el.type === "checkbox") {
+      el.checked = Boolean(data[key]);
+    } else {
+      el.value = data[key] || '';
+    }
+  });
+}
+
+function clearForm(fieldIds) {
+  fieldIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.type === "checkbox") {
+      el.checked = false;
+    } else if (el.tagName === "SELECT") {
+      el.selectedIndex = 0;
+    } else {
+      el.value = "";
+    }
+  });
+}
+
+function setButtonText(buttonId, text) {
+  const buttonElement = document.getElementById(buttonId);
+  if (buttonElement) {
+    buttonElement.innerText = text;
+  }
+}
+
+// modal Add Package
+function addModalPackage(modal) {
+  if (!modal) return;
+
+  setModalTitle("modalPackageTitle", "Tambah Paket");
+  setButtonText("btnSavePackage", "Simpan");
+
+  // clear all input
+  clearForm([
+    "packageName",
+    "packageDescription",
+    "packageId"
+  ]);
+  modal.show();
+}
+
+// modal Update Package
+function updateModalPackage(data, modal) {
+  if (!modal) return;
+
+  setModalTitle("modalPackageTitle", "Edit Paket");
+  setButtonText("btnSavePackage", "Update");
+
+  fillForm({
+    packageName: data.nama,
+    packageDescription: data.deskripsi,
+    packageId: data.id,
+  });
+  modal.show();
+}
+
+// modal Add variant
+function addModalVariant(modal, packageId = null, packageName = "") {
+  if (!modal) return;
+
+  setModalTitle("modalVariantTitle", packageName ? `Tambah Varian - ${packageName}` : "Tambah Varian");
+  setButtonText("btnSaveVariant", "Simpan");
+
+  // Set package_id jika diberikan
+  if (packageId) {
+    document.getElementById('variantPackageId').value = packageId;
+  } else {
+  }
+
+  // clear all input
+  clearForm([
+    "variantName",
+    "variantPrice",
+    "variantDescription",
+    "variantId"
+  ]);
+  modal.show();
+}
+
+// modal Update variant
+function updateModalVariant(data, modal) {
+  if (!modal) return;
+
+  setModalTitle("modalVariantTitle", "Edit Varian");
+  setButtonText("btnSaveVariant", "Update");
+
+  fillForm({
+    variantName: data.nama,
+    variantPrice: data.harga,
+    variantDescription: data.deskripsi,
+    variantId: data.id,
+    variantPackageId: data.package_id
+  });
+  modal.show();
+}
+
+// delete confirmation
+function confirmDeletePackage(id, name) {
+  if (confirm(`Apakah Anda yakin ingin menghapus paket "${name}"? Semua varian dalam paket ini juga akan dihapus.`)) {
+    deletePackage(id).then(result => {
+      if (!result.error) {
+        alert('Paket berhasil dihapus');
+        location.reload();
+      } else {
+        alert('Error: ' + result.error.message);
+      }
+    });
+  }
+}
+
+function confirmDeleteVariant(id, name) {
+  if (confirm(`Apakah Anda yakin ingin menghapus varian "${name}"?`)) {
+    deleteVariant(id).then(result => {
+      if (!result.error) {
+        alert('Varian berhasil dihapus');
+        location.reload();
+      } else {
+        alert('Error: ' + result.error.message);
+      }
+    });
+  }
+}
+
+async function fetchData(action, data = {}) {
+  const formData = new FormData();
+  formData.append('action', action);
+  Object.entries(data).forEach(([key, value]) => formData.append(key, value));
+
+  const response = await fetch(`packet-varian.php`, {
+    method: 'POST',
+    body: formData
+  });
+  return response.json();
+}
+
+//CRUD
+
+const createPackage = (data) => fetchData('create_package', data);
+const updatePackage = (id, data) => fetchData('update_package', { paket_id: id, ...data });
+const deletePackage = (id) => fetchData('delete_package', { paket_id: id });
+
+const createVariant = (data) => fetchData('create_variant', data);
+const updateVariant = (id, data) => fetchData('update_variant', { varian_id: id, ...data });
+const deleteVariant = (id) => fetchData('delete_variant', { varian_id: id });
+
+// Form handlers
+async function handlePackageSubmit(event) {
+  event.preventDefault();
+
+  const isEdit = document.getElementById('packageId').value;
+
+  const packageData = {
+    nama: document.getElementById('packageName').value,
+    deskripsi: document.getElementById('packageDescription').value,
+  };
+
+  if (isEdit) packageData.paket_id = isEdit;
+
+  try {
+    const result = isEdit ? await updatePackage(isEdit, packageData) : await createPackage(packageData);
+    if (result.error) {
+      alert('Error: ' + result.error);
+    } else {
+      alert(`Paket berhasil ${isEdit ? 'diupdate' : 'ditambah'}!`);
+      location.reload();
+    }
+  } catch (error) {
+    alert('Gagal : ' + error.message);
+  }
+}
+
+async function handleVariantSubmit(event) {
+  event.preventDefault();
+
+  const isEdit = document.getElementById('variantId').value;
+  const packageId = document.getElementById('variantPackageId').value;
+
+  const variantData = {
+    nama: document.getElementById('variantName').value,
+    harga: document.getElementById('variantPrice').value,
+    deskripsi: document.getElementById('variantDescription').value,
+    paket_id: packageId
+  };
+
+  try {
+    const result = isEdit ? await updateVariant(isEdit, variantData) : await createVariant(variantData);
+    result.error ? alert('Error: ' + result.error.message) : alert(`Varian berhasil ${isEdit ? 'diupdate' : 'ditambah'}!`);
+    if (!result.error) location.reload();
+  } catch (error) {
+    alert('Gagal : ' + error.message);
+  }
+}
+

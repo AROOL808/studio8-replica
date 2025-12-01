@@ -55,6 +55,7 @@ $clients = get_order_data()['data'];
                 <nav class="nav flex-column">
                   <a href="clients.html" class="nav-link p-2 fw-bold">Daftar Client</a>
                   <a href="packet-edit.html" class="nav-link p-2 ">Edit Paket</a>
+                  <a href="packet-varian.php" class="nav-link p-2 ">Paket</a>
                   <a href="extra-edit.html" class="nav-link p-2">Edit Extra</a>
                   <a href="giftcard-list.html" class="nav-link p-2">Daftar Giftcard</a>
                   <button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button>
