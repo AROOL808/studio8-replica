@@ -263,7 +263,7 @@ document.addEventListener('DOMContentLoaded', function () {
 // //   });
 // // })();
 
-<<<<<<< Updated upstream
+
 // // // Package selection highlight on booking page
 // document.addEventListener('DOMContentLoaded', function () {
 //   // package selection highlight
@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
 //     });
 //   });
 // });
-=======
+
 // // Package selection highlight on booking page
 document.addEventListener('DOMContentLoaded', function () {
   // package selection highlight
@@ -603,4 +603,4 @@ async function handleVariantSubmit(event) {
     alert('Gagal : ' + error.message);
   }
 }
->>>>>>> Stashed changes
+

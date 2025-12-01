@@ -110,11 +110,8 @@ function delete_data($table, $filters = [])
     return supabaseRequest("DELETE", $table, $filters);
 }
 
-<<<<<<< Updated upstream
-function insert_data_order($order_id,$varian_id ,$nama, $email, $nomor_hp, $tanggal, $waktu, $status =  'PENDING')
-=======
-function insert_data_order($varian_id, $nama, $email, $nomor_hp, $tanggal, $waktu)
->>>>>>> Stashed changes
+function insert_data_order($order_id, $varian_id, $nama, $email, $nomor_hp, $tanggal, $waktu, $status =  'PENDING')
+
 {
     $body = [
         "order_id"  => $order_id,
@@ -140,7 +137,6 @@ function insert_extra_order($order_id, $extra_id)
     return supabaseRequest("POST", "extra_order", [], $body);
 }
 
-<<<<<<< Updated upstream
 function get_order_data($filters = [])
 {
     return supabaseRequest("GET", "order", array_merge([
@@ -181,6 +177,108 @@ function update_order_status($order_id, $status)
     ], [
         "status" => $status
     ]);
+
+    // Paket
+    function get_all_package()
+    {
+        return supabaseRequest("GET", "paket", [], []);
+    }
+
+    function get_package_with_variants()
+    {
+        $packages = supabaseRequest("GET", "paket", ["select" => "*, varian(nama, harga, varian_id,deskripsi)"], []);
+        if (isset($packages['error'])) {
+            return $packages;
+        }
+
+        if (isset($packages['data'])) {
+            foreach ($packages['data'] as &$package) {
+                $package['variants'] = $package['varian'] ?? [];
+                unset($package['varian']);
+            }
+        }
+        return $packages;
+    }
+
+    function get_package_by_id($paket_id)
+    {
+        return supabaseRequest("GET", "paket", ["paket_id" => "eq." . $paket_id], []);
+    }
+
+    function create_package($nama, $deskripsi = "")
+    {
+        $body = [
+            "nama" => $nama,
+            "deskripsi" => $deskripsi,
+            // "jenis_paket" => $jenis_paket,
+            // "grup" => $grup,
+            "created_at" => date("c")
+        ];
+        return supabaseRequest("POST", "paket", [], $body);
+    }
+
+    function update_package($paket_id, $nama, $deskripsi = "")
+    {
+        $body = [
+            "nama" => $nama,
+            "deskripsi" => $deskripsi,
+            // "jenis_paket" => $jenis_paket,
+            // "grup" => $grup
+        ];
+        return supabaseRequest("PATCH", "paket", ["paket_id" => "eq." . $paket_id], $body);
+    }
+
+    function delete_package($paket_id)
+    {
+        return supabaseRequest("DELETE", "paket", ["paket_id" => "eq." . $paket_id]);
+    }
+
+    // Varian
+    function get_all_variant()
+    {
+        return supabaseRequest("GET", "varian", [], []);
+    }
+
+    function get_variants_by_package($paket_id)
+    {
+        return supabaseRequest("GET", "varian", ["paket_id" => "eq." . $paket_id], []);
+    }
+
+    function get_variant_by_id($varian_id)
+    {
+        return supabaseRequest("GET", "varian", ["varian_id" => "eq." . $varian_id], []);
+    }
+
+    function create_variant($paket_id, $nama, $harga, $deskripsi = "")
+    {
+        $body = [
+            "paket_id" => $paket_id,
+            "nama" => $nama,
+            "harga" => $harga,
+            "deskripsi" => $deskripsi,
+            "created_at" => date("c")
+        ];
+        return supabaseRequest("POST", "varian", [], $body);
+    }
+
+    function update_variant($varian_id, $nama, $harga, $deskripsi = "", $paket_id = null)
+    {
+        $body = [
+            "nama" => $nama,
+            "harga" => $harga,
+            "deskripsi" => $deskripsi
+        ];
+
+        if ($paket_id) {
+            $body['paket_id'] = $paket_id;
+        }
+        return supabaseRequest("PATCH", "varian", ["varian_id" => "eq." . $varian_id], $body);
+    }
+
+    function delete_variant($varian_id)
+    {
+        return supabaseRequest("DELETE", "varian", ["varian_id" => "eq." . $varian_id]);
+    }
 }
 /* ------------------------------------------------------
    Example usage (you can remove these examples)    
