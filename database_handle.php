@@ -3,7 +3,8 @@
 /**
  * Load environment variable from getenv() or .env file
  */
-function loadEnvValue($key) {
+function loadEnvValue($key)
+{
     $v = getenv($key);
     if ($v !== false && $v !== '') return $v;
 
@@ -31,7 +32,6 @@ if (!$PROJECT_URL || !$SECRET_KEY) {
     die("Missing PROJECT_URL or SECRET_KEY\n");
 }
 
-
 /**
  * Reusable Supabase Request Function
  */
@@ -52,7 +52,7 @@ function supabaseRequest($method, $endpoint, $params = [], $body = null)
         "apikey: " . $SECRET_KEY,
         "Accept: application/json",
         "Content-Type: application/json",
-         "Prefer: return=representation"
+        "Prefer: return=representation"
     ];
 
     curl_setopt_array($ch, [
@@ -110,7 +110,11 @@ function delete_data($table, $filters = [])
     return supabaseRequest("DELETE", $table, $filters);
 }
 
+<<<<<<< Updated upstream
 function insert_data_order($order_id,$varian_id ,$nama, $email, $nomor_hp, $tanggal, $waktu, $status =  'PENDING')
+=======
+function insert_data_order($varian_id, $nama, $email, $nomor_hp, $tanggal, $waktu)
+>>>>>>> Stashed changes
 {
     $body = [
         "order_id"  => $order_id,
@@ -136,6 +140,7 @@ function insert_extra_order($order_id, $extra_id)
     return supabaseRequest("POST", "extra_order", [], $body);
 }
 
+<<<<<<< Updated upstream
 function get_order_data($filters = [])
 {
     return supabaseRequest("GET", "order", array_merge([
@@ -195,5 +200,3 @@ function update_order_status($order_id, $status)
 
 // $paket = get_data("extra", "*")['data'];
 // var_dump($paket);
-
-?>
