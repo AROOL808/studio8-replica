@@ -11,9 +11,102 @@ $varian_paket = get_data("varian", "*", [
     "paket_id" => "eq." . ($_GET['paket_id'] ?? 1)
 ])['data'];
 
+function generateUniqueGiftcardCode($length = 8)
+{
+    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    $charLength = strlen($characters);
+
+    while (true) {
+        // Generate random string
+        $result = '';
+        for ($i = 0; $i < $length; $i++) {
+            $result .= $characters[random_int(0, $charLength - 1)];
+        }
+
+        // CEK ke Supabase apakah kode sudah ada
+        $check = supabaseRequest("GET", "giftcard", [
+            "select" => "code",
+            "code"   => "eq.$result"
+        ]);
+
+        // Jika tidak ada data -> aman, return kode
+        if (empty($check["data"])) {
+            return $result;
+        }
+
+        // Jika ada → loop akan ulang dan generate string baru
+    }
+}
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
-// Rubah bagian sini aja
+    // Proses form submission
+    $giftcard_id = "GC" . rand();
+    $varian_id = $_POST['varian'];
+    $paket_id = $_POST['paket_id'];
+
+    $code = generateUniqueGiftcardCode(8);
+    // Insert giftcard data
+    $response = insert_data_giftcard($giftcard_id, $code, $varian_id, 'PENDING');
+    $extras = [];
+
+    // Loop semua $_POST untuk mencari key yang mulai dengan "extra"
+    foreach ($_POST as $key => $value) {
+        if (strpos($key, 'extra') === 0) { // key dimulai dengan 'extra'
+            $extras[] = $value; // value adalah extra_id
+        }
+    }
+      // Insert setiap extra ke tabel extra_order
+    foreach ($extras as $extra_id) {
+      $response = insert_extra_order(null, $extra_id, $giftcard_id);
+  }
+
+  Midtrans\Config::$serverKey = loadEnvValue('SERVER_KEY');
+  Midtrans\Config::$isProduction = false;
+  Midtrans\Config::$is3ds = true;
+  Midtrans\Config::$isSanitized = true;
+
+  
+  $total_extra = 0;
+  if($extras != []){
+    
+      // Fetch harga extra secara bulk
+      $data_harga_extra = get_extra_prices($extras);
+    foreach ($data_harga_extra['data'] as $row) {
+        $total_extra += $row['harga'];
+    }
+  }
+
+  // hitung harga varian 
+  $data_varian = get_data_varian($_POST['varian'])['data'][0];
+  $harga_varian = intval($data_varian['harga']);
+  // total harga
+  $total_harga = $harga_varian + $total_extra;
+
+  $params = array(
+    'transaction_details' => array(
+        'order_id' => $giftcard_id,
+        'gross_amount' => $total_harga
+    ),'items_details' => array(
+        array(
+            'id' => $_POST['varian'],
+            'price' => $harga_varian,
+            'quantity' => 1,
+            'name' => $data_varian['nama']
+        )
+    )
+
+  );
+
+  try {
+    // Get Snap Payment Page URL
+    $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
+    
+    // Redirect to Snap Payment Page
+    header('Location: ' . $paymentUrl);
+  }
+  catch (Exception $e) {
+    echo $e->getMessage();
+  }
 
 }
 
@@ -23,7 +116,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Booking — Studio 8</title>
+  <title>Buy Giftard — Studio 8</title>
 
   <!-- Bootstrap CSS (CDN) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -57,7 +150,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             <div class="list-group package-list"> 
               <?php foreach($daftar_paket as $paket):?>
-              <a class="text-decoration-none" href='booking.php?paket_id=<?=$paket['paket_id']?>'>
+              <a class="text-decoration-none" href='giftcard.php?paket_id=<?=$paket['paket_id']?>'>
                 <label class="list-group-item package-card mb-3 <?= $_GET['paket_id'] == $paket['paket_id'] ? 'selected' : ''?>" data-package="graduation">
                   <div>
                     <div class="d-flex justify-content-between align-items-center">
@@ -79,8 +172,14 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
           <!-- RIGHT: Form booking -->
           <div class="col-lg-6">
-            <h3 class="fw-bold mb-3">Form Booking</h3>
-
+            <h3 class="fw-bold mb-3">Form Giftcard</h3>
+            <div>
+              <div class="d-flex justify-content-end mb-3">
+                <a href="giftcard-redeem.php" class="btn btn-dark text-white px-3 py-2">
+                  Redeem Giftcard
+                </a>
+              </div>
+            </div>
             <form id="booking-form" class="booking-form card p-4 shadow-sm" action="" method="POST">
               <!-- Variant (wajib) - DIUBAH: radio dengan deskripsi dan keterangan harga -->
               <div class="mb-3 form-section">
@@ -121,7 +220,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
               <div class="d-flex justify-content-between align-items-center">
                 <a href="index.html" class="btn btn-outline-dark">Kembali</a>
-                <button type="submit" class="btn btn-dark">Konfirmasi Booking</button>
+                <button type="submit" class="btn btn-dark">Konfirmasi Pembelian</button>
               </div>
 
             </form>

@@ -1,3 +1,92 @@
+<?php
+session_start();
+include_once 'database_handle.php';
+
+function redeemGiftcard($code, $fullName, $email, $phone, $date, $time)
+{
+    // 1. CEK GIFT CARD
+    $gc = supabaseRequest("GET", "giftcard", [
+        "select" => "*",
+        "code"   => "eq.$code"
+    ]);
+
+    if (empty($gc['data'])) {
+        return ["error" => "Giftcard tidak ditemukan"];
+    }
+
+    $giftcard = $gc['data'][0];
+
+    if ($giftcard["giftcard_status"] !== "PAID") {
+        return ["error" => "Giftcard belum dibayar atau sudah digunakan"];
+    }
+
+    $order_id = rand();
+    // 2. BUAT ORDER BARU (STATUS = BOOKED)
+    $newOrder = supabaseRequest("POST", "order", [], [
+        "order_id"  => $order_id,
+        "varian_id" => $giftcard["varian_id"],
+        "nama"      => $fullName,
+        "email"     => $email,
+        "nomor_hp"  => $phone,
+        "tanggal"   => $date,
+        "waktu"     => $time,
+        "giftcard_id" => $giftcard["giftcard_id"],
+        "status" => "BOOKED"
+    ]);
+
+    if (empty($newOrder["data"])) {
+        return ["error" => "Gagal membuat order"];
+    }
+
+    $order_id = $newOrder["data"][0]["order_id"];
+
+    // 3. UPDATE TABEL EXTRA ORDER
+    //    Set order_id berdasarkan giftcard_id
+    $updateExtras = supabaseRequest("PATCH", "extra_order", [
+        "giftcard_id" => "eq." . $giftcard["giftcard_id"]
+    ], [
+        "order_id" => $order_id
+    ]);
+
+    // optional: cek error
+    // if (!empty($updateExtras["error"])) {}
+
+    // 4. UPDATE STATUS GIFT CARD MENJADI "USED"
+    $useGC = supabaseRequest("PATCH", "giftcard", [
+        "giftcard_id" => "eq." . $giftcard["giftcard_id"]
+    ], [
+        "giftcard_status" => "USED"
+    ]);
+
+    return [
+        "status" => 200,
+        "message" => "Redeem giftcard berhasil",
+        "order_id" => $order_id
+    ];
+}
+
+if($_SERVER['REQUEST_METHOD'] === 'POST'){
+    // Proses redeem giftcard
+    $result = redeemGiftcard(
+        $_POST['giftcardCode'],
+        $_POST['fullName'],
+        $_POST['email'],
+        $_POST['phone'],
+        $_POST['date'],
+        $_POST['time']
+    );
+
+    if(isset($result['error'])){
+        // Tangani error (misal: tampilkan pesan error)
+        var_dump($result['error']);
+    } else {
+        // Redirect ke halaman success dengan order_id
+        $orderId = $result['order_id'];
+        header("Location: success.php?order_id=$orderId");
+        exit();
+    }
+}
+?>
 <!doctype html>
 <html lang="id">
 <head>
@@ -35,7 +124,7 @@
           <div class="col-lg-8 offset-lg-2">
             <h3 class="fw-bold mb-3">Tukar Giftcard</h3>
 
-            <form id="booking-form" class="booking-form card p-4 shadow-sm" novalidate>
+            <form id="booking-form" class="booking-form card p-4 shadow-sm" action="" method="POST">
             <!-- Personal data -->
               <div id="personal-data" class="mb-3 form-section">
                 <label class="form-label fw-semibold">Data Diri <span class="text-danger" id="pd-required">*</span></label>

@@ -18,6 +18,8 @@ $fraud = $notif->fraud_status;
 
 error_log("Order ID $notif->order_id: "."transaction status = $transaction, fraud staus = $fraud");
 
+$isGiftcard = str_contains($notif->order_id, 'GC');
+
 if ($transaction == 'capture') {
     if ($fraud == 'challenge') {
       // TODO Set payment status in merchant's database to 'challenge'
@@ -29,11 +31,19 @@ if ($transaction == 'capture') {
 }
 else if ($transaction == 'settlement') {
     // TODO set payment status in merchant's database to 'success'
-    update_order_status($notif->order_id, "BOOKED");
+    if($isGiftcard){
+        update_giftcard_order_status($notif->order_id, "PAID");
+    } else {
+        update_order_status($notif->order_id, "BOOKED");
+    }
 }
 else if ($transaction == 'pending') {
     // TODO set payment status in merchant's database to 'pending'
-    update_order_status($notif->order_id, "PENDING");
+    if($isGiftcard){
+        update_giftcard_order_status($notif->order_id, "PENDING");
+    } else {
+        update_order_status($notif->order_id, "PENDING");
+    }
 }
 else if ($transaction == 'cancel') {
     if ($fraud == 'challenge') {

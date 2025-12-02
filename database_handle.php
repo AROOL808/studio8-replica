@@ -127,11 +127,25 @@ function insert_data_order($order_id, $varian_id, $nama, $email, $nomor_hp, $tan
     return supabaseRequest("POST", "order", [], $body);
 }
 
-function insert_extra_order($order_id, $extra_id)
+function insert_data_giftcard($giftcard_id, $code, $varian_id, $status =  'PENDING')
+
+{
+    $body = [
+        "giftcard_id"  => $giftcard_id,
+        "code"  => $code,
+        "varian_id" => $varian_id,
+        "giftcard_status"    => $status
+    ];
+
+    return supabaseRequest("POST", "giftcard", [], $body);
+}
+
+function insert_extra_order($order_id, $extra_id, $giftcard_id = null)
 {
     $body = [
         "order_id" => $order_id,
-        "extra_id" => $extra_id
+        "extra_id" => $extra_id,
+        "giftcard_id" => $giftcard_id
     ];
 
     return supabaseRequest("POST", "extra_order", [], $body);
@@ -144,11 +158,26 @@ function get_order_data($filters = [])
     ], $filters));
 }
 
+function get_giftcard_data($filters = [])
+{
+    return supabaseRequest("GET", "giftcard", array_merge([
+        "select" => "*, varian(*, paket(*)), extra_order(*, extra(*))"
+    ], $filters));
+}
+
 function get_order_detail($order_id, $filters = [])
 {
     return supabaseRequest("GET", "order", array_merge([
         "select" => "*, varian(*, paket(*)), extra_order(*, extra(*))",
         "order_id" => "eq." . $order_id
+    ], $filters));
+}
+
+function get_giftcard_order_detail($giftcard_id, $filters = [])
+{
+    return supabaseRequest("GET", "giftcard", array_merge([
+        "select" => "*, varian(*, paket(*)), extra_order(*, extra(*))",
+        "giftcard_id" => "eq." . $giftcard_id
     ], $filters));
 }
 
@@ -176,6 +205,15 @@ function update_order_status($order_id, $status)
         "order_id" => "eq." . $order_id
     ], [
         "status" => $status
+    ]);
+}
+
+function update_giftcard_order_status($giftcard_id, $status)
+{
+    return supabaseRequest("PATCH", "giftcard", [
+        "giftcard_id" => "eq." . $giftcard_id
+    ], [
+        "giftcard_status" => $status
     ]);
 }
 
