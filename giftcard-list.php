@@ -53,12 +53,11 @@ $giftcards = get_giftcard_data()['data'];
               <div class="card-body">
                 <h6 class="mb-3">Admin</h6>
                 <nav class="nav flex-column">
-                  <a href="clients.html" class="nav-link p-2 fw-bold">Daftar Client</a>
-                  <a href="packet-edit.html" class="nav-link p-2 ">Edit Paket</a>
-                  <a href="packet-varian.php" class="nav-link p-2 ">Paket</a>
-                  <a href="extra-edit.html" class="nav-link p-2">Edit Extra</a>
-                  <a href="giftcard-list.html" class="nav-link p-2">Daftar Giftcard</a>
-                  <button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button>
+                  <a href="clients.php" class="nav-link p-2">Daftar Client</a>
+                  <a href="packet-varian.php" class="nav-link p-2">Edit Paket</a>
+                  <a href="extra-edit.php" class="nav-link p-2 ">Edit Extra</a>
+                  <a href="giftcard-list.php" class="nav-link p-2 fw-bold">Daftar Giftcard</a>
+                  <a href="logout.php"><button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button></a>
                 </nav>
               </div>
             </div>

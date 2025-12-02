@@ -1,8 +1,31 @@
 <?php
+session_start();
+if(!isset($_SESSION["admin"])){
+  header("Location: login.php");
+  exit();
+}
 // config.php - Konfigurasi database Supabase
-define('SUPABASE_URL', 'https://hqmazwavlgfjgofpdwpb.supabase.co');
-define('SUPABASE_KEY', 'sb_secret_WuVvAyWOWOxknywSkmL_0w_D9ZXMB1i');
+define('SUPABASE_URL', loadEnvValue('SUPABASE_URL'));
+define('SUPABASE_KEY', loadEnvValue('SECRET_KEY'));
 
+function loadEnvValue($key)
+{
+    $v = getenv($key);
+    if ($v !== false && $v !== '') return $v;
+
+    $envFile = __DIR__ . '/.env';
+    if (!file_exists($envFile)) return '';
+
+    $lines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || $line[0] === '#') continue;
+        if (strpos($line, $key . '=') === 0) {
+            return trim(substr($line, strlen($key) + 1), "\"' ");
+        }
+    }
+    return '';
+}
 // Fungsi untuk melakukan request ke Supabase REST API
 function supabaseRequest($endpoint, $method = 'GET', $data = null) {
     $url = SUPABASE_URL . '/rest/v1/' . $endpoint;
@@ -135,10 +158,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 <h6 class="mb-3">Admin</h6>
                 <nav class="nav flex-column">
                   <a href="clients.php" class="nav-link p-2">Daftar Client</a>
-                  <a href="packet-edit.php" class="nav-link p-2">Edit Paket</a>
+                  <a href="packet-varian.php" class="nav-link p-2">Edit Paket</a>
                   <a href="extra-edit.php" class="nav-link p-2 fw-bold">Edit Extra</a>
                   <a href="giftcard-list.php" class="nav-link p-2">Daftar Giftcard</a>
-                  <button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button>
+                  <a href="logout.php"><button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button></a>
                 </nav>
               </div>
             </div>

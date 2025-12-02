@@ -1,5 +1,9 @@
 <?php
-
+session_start();
+if(!isset($_SESSION["admin"])){
+  header("Location: login.php");
+  exit();
+}
 include 'database_handle.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
@@ -125,19 +129,19 @@ $package_list = get_package_with_variants()['data'] ?? [];
                 <div class="row g-4">
                     <!-- Sidebar -->
                     <aside class="col-md-3">
-                        <div class="card sidebar-card shadow-sm sticky-top">
-                            <div class="card-body">
-                                <h6 class="mb-3">Admin</h6>
-                                <nav class="nav flex-column">
-                                    <a href="clients.html" class="nav-link p-2">Daftar Client</a>
-                                    <a href="packet-edit.html" class="nav-link p-2 ">Edit Paket</a>
-                                    <a href="packet-varian.php" class="nav-link p-2 fw-bold">Paket</a>
-                                    <a href="extra-edit.html" class="nav-link p-2">Edit Extra</a>
-                                    <a href="giftcard-list.html" class="nav-link p-2">Daftar Giftcard</a>
-                                    <button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button>
-                                </nav>
-                            </div>
+                    <div class="card sidebar-card shadow-sm sticky-top">
+                        <div class="card-body">
+                        <h6 class="mb-3">Admin</h6>
+                        <nav class="nav flex-column">
+                            <a href="clients.php" class="nav-link p-2">Daftar Client</a>
+                            <a href="packet-varian.php" class="nav-link p-2 fw-bold">Edit Paket</a>
+                            <a href="extra-edit.php" class="nav-link p-2 ">Edit Extra</a>
+                            <a href="giftcard-list.php" class="nav-link p-2">Daftar Giftcard</a>
+                            <a href="logout.php"><button id="logoutBtn" class="btn btn-outline-dark w-100 mt-3">Logout</button></a>
+
+                        </nav>
                         </div>
+                    </div>
                     </aside>
 
                     <!-- Main: Clients list -->

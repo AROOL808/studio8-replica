@@ -113,7 +113,7 @@ if ($isGiftcard) {
             </ul>
             <?php endif;?>
             <div class="d-flex justify-content-between">
-                <a href="index.php" class="btn btn-outline-dark px-4">Kembali ke Beranda</a>
+                <a href="index.html" class="btn btn-outline-dark px-4">Kembali ke Beranda</a>
 
                 <!-- Tombol Download Invoice -->
                 <a 
